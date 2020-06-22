@@ -14,7 +14,8 @@ The analysis presented here examines the average
 ### Data loading and preprocessing  
 First, load the libraries used in the analysis.  
 
-```{r library, message=FALSE, echo = TRUE}
+
+```r
 library(tidyverse)
 ```
 
@@ -24,7 +25,8 @@ Check whether data file already exists; otherwise download and unzip.
 First, unzip the data file and save the data into a data frame called 'activity'.  
 
 Convert the 'date' column into Date object format.
-```{r download, echo = TRUE}
+
+```r
  if (!file.exists("activity.zip")) {
   
   fileURL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
@@ -40,7 +42,8 @@ unzip("activity.zip", exdir = ".")
 ```
 
 Read in dataset and convert date column to Date format
-```{r preprocessing, echo = TRUE}
+
+```r
 activity <- read.csv("activity.csv")
 activity$date <- as.Date(as.character(activity$date))
 ```
@@ -52,61 +55,85 @@ activity$date <- as.Date(as.character(activity$date))
 For this part of the assignment, the missing values in the data set were ignored.  
 
 1. Calculate the total number of steps taken per day  
-```{r totalsteps, echo = TRUE}
+
+```r
 dailySteps <- aggregate(activity$steps, by = list(activity$date), FUN = sum)
 names(dailySteps) <- c("date", "sum.of.steps")
 head(dailySteps) # check the data
 ```
 
+```
+##         date sum.of.steps
+## 1 2012-10-01           NA
+## 2 2012-10-02          126
+## 3 2012-10-03        11352
+## 4 2012-10-04        12116
+## 5 2012-10-05        13294
+## 6 2012-10-06        15420
+```
+
 2. Make a histogram of the total number of steps taken each day  
 
-```{r histogram1, echo = TRUE, warning = FALSE}
 
+```r
 hist(dailySteps$sum.of.steps, breaks = 61, 
      main = "Total number of steps taken each day", 
      xlab = "Total number of steps per day")
-
 ```
-3. Calculate and report the mean and median of the total number of steps taken per day
-```{r steps_summary, echo = TRUE}
 
+![](PA1_template_files/figure-html/histogram1-1.png)<!-- -->
+3. Calculate and report the mean and median of the total number of steps taken per day
+
+```r
 meanTotalSteps <- as.integer(mean(dailySteps$sum.of.steps, na.rm = TRUE))
 medianTotalSteps <- median(dailySteps$sum.of.steps, na.rm = TRUE)
 ```
 
-The mean total number of steps per day was **`r meanTotalSteps`** steps, and the median number of steps was **`r medianTotalSteps`** steps per day.
+The mean total number of steps per day was **10766** steps, and the median number of steps was **10765** steps per day.
 
 ## What is the average daily activity pattern?
 
-To examine the average   
+To examine the average 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r dailypattern, echo = TRUE}
 
+```r
 dailyAverage <- activity %>% group_by(interval) %>%  summarise(average.steps = mean(steps, na.rm = TRUE))
-
-plot(x=dailyAverage$interval, y=dailyAverage$average.steps, type = "l", 
-     main = "Average number f steps per day", xlab = "Interval (5 min each)", ylab = "Average step number")
-
+```
 
 ```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```r
+plot(x=dailyAverage$interval, y=dailyAverage$average.steps, type = "l", 
+     main = "Average number f steps per day", xlab = "Interval (5 min each)", ylab = "Average step number")
+```
+
+![](PA1_template_files/figure-html/dailypattern-1.png)<!-- -->
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r maxinterval, echo = TRUE}
 
+```r
 dailyAverage[which.max(dailyAverage$average.steps),]
+```
 
+```
+## # A tibble: 1 x 2
+##   interval average.steps
+##      <int>         <dbl>
+## 1      835          206.
 ```
 
 ## Imputing missing values
 
-```{r missingvalues, echo = TRUE}
 
+```r
 missing <- sum(is.na(activity$steps))
 ```
 
-1. The total number of missing values in the dataset (i.e. the total number of rows with NAs) is **`r missing`**.  
+1. The total number of missing values in the dataset (i.e. the total number of rows with NAs) is **2304**.  
 
 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
