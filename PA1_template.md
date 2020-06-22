@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 author: Maurice Farmer
-date: 24 June 2020
+date: "24 June 2020"
 output: 
   html_document: 
     keep_md: yes
@@ -93,7 +93,7 @@ The mean total number of steps per day was **10766** steps, and the median numbe
 
 ## What is the average daily activity pattern?
 
-To examine the average 
+To examine the average   
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 

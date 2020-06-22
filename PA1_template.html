@@ -430,7 +430,8 @@ medianTotalSteps &lt;- median(dailySteps$sum.of.steps, na.rm = TRUE)</code></pre
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
-<p>To examine the average 1. Make a time series plot (i.e. type = “l”) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)</p>
+<p>To examine the average<br />
+1. Make a time series plot (i.e. type = “l”) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)</p>
 <pre class="r"><code>dailyAverage &lt;- activity %&gt;% group_by(interval) %&gt;%  summarise(average.steps = mean(steps, na.rm = TRUE))</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre class="r"><code>plot(x=dailyAverage$interval, y=dailyAverage$average.steps, type = &quot;l&quot;, 
