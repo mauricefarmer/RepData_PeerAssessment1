@@ -1,11 +1,14 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
-author: Maurice Farmer
-date: "24 June 2020"
 output: 
   html_document: 
-    keep_md: yes
+    keep_md: true
 ---
+
+Author: Maurice Farmer  
+Date: 4 June 2020
+
+
 ## Summary  
 This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals throughout the day. The dataset consists of measurements collected from an anonymous during October and November 2012 and include the number of steps taken in 5 minute intervals each day.  
 
