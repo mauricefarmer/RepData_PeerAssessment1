@@ -27,9 +27,8 @@ library(tidyverse)
 
 Check whether data file already exists; otherwise download and unzip. 
 
-First, unzip the data file and save the data into a data frame called 'activity'.  
+If the data file doesn't exist, download and unzip it. Otherwise, unzip the exisitng file.   
 
-Convert the 'date' column into Date object format.
 
 ```r
  if (!file.exists("activity.zip")) {
@@ -46,7 +45,7 @@ Convert the 'date' column into Date object format.
 unzip("activity.zip", exdir = ".")
 ```
 
-Read in dataset and convert date column to Date format
+Read in dataset and convert date column to Date format.  
 
 ```r
 activity <- read.csv("activity.csv")
@@ -83,7 +82,8 @@ head(dailySteps) # check the data
 ```r
 hist(dailySteps$sum.of.steps, breaks = 61, 
      main = "Total number of steps taken each day", 
-     xlab = "Total number of steps per day")
+     xlab = "Total number of steps per day",
+     col = "blue")
 ```
 
 ![](PA1_template_files/figure-html/histogram1-1.png)<!-- -->
@@ -94,25 +94,22 @@ meanTotalSteps <- as.integer(mean(dailySteps$sum.of.steps, na.rm = TRUE))
 medianTotalSteps <- median(dailySteps$sum.of.steps, na.rm = TRUE)
 ```
 
-The mean total number of steps per day was **10766** steps, and the median number of steps was **10765** steps per day.
+The mean total number of steps per day was **10766** steps.   
+The median number of steps was **10765** steps per day.
 
 ## What is the average daily activity pattern?
 
-To examine the average   
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 
 ```r
 dailyAverage <- activity %>% group_by(interval) %>%  summarise(average.steps = mean(steps, na.rm = TRUE))
-```
 
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-```r
 plot(x=dailyAverage$interval, y=dailyAverage$average.steps, type = "l", 
-     main = "Average number f steps per day", xlab = "Interval (5 min each)", ylab = "Average step number")
+     main = "Average number of steps per day", 
+     xlab = "Interval (5 min each)", 
+     ylab = "Average step number",
+    col = "steelblue4"  )
 ```
 
 ![](PA1_template_files/figure-html/dailypattern-1.png)<!-- -->
@@ -121,15 +118,10 @@ plot(x=dailyAverage$interval, y=dailyAverage$average.steps, type = "l",
 
 
 ```r
-dailyAverage[which.max(dailyAverage$average.steps),]
+avInter <- dailyAverage[which.max(dailyAverage$average.steps),]
 ```
 
-```
-## # A tibble: 1 x 2
-##   interval average.steps
-##      <int>         <dbl>
-## 1      835          206.
-```
+The interval with the highest average steps is interval **835** which has an average of **206.17** steps.
 
 ## Imputing missing values
 
@@ -145,3 +137,8 @@ missing <- sum(is.na(activity$steps))
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.
+
+1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
