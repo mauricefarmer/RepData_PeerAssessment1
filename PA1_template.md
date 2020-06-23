@@ -39,10 +39,11 @@ If the data file doesn't exist, download and unzip it. Otherwise, unzip the exis
   
   # Unzip the file
   unzip("activity.zip", exdir = ".")
+  
+ } else {
+  # Unzip the file
+  unzip("activity.zip", exdir = ".")
  }
-
-# Unzip the file
-unzip("activity.zip", exdir = ".")
 ```
 
 Read in dataset and convert date column to Date format.  
@@ -87,6 +88,7 @@ hist(dailySteps$sum.of.steps, breaks = 61,
 ```
 
 ![](PA1_template_files/figure-html/histogram1-1.png)<!-- -->
+
 3. Calculate and report the mean and median of the total number of steps taken per day
 
 ```r
@@ -118,7 +120,7 @@ plot(x=dailyAverage$interval, y=dailyAverage$average.steps, type = "l",
 
 
 ```r
-avInter <- dailyAverage[which.max(dailyAverage$average.steps),]
+avInterval <- dailyAverage[which.max(dailyAverage$average.steps),]
 ```
 
 The interval with the highest average steps is interval **835** which has an average of **206.17** steps.
@@ -132,9 +134,43 @@ missing <- sum(is.na(activity$steps))
 
 1. The total number of missing values in the dataset (i.e. the total number of rows with NAs) is **2304**.  
 
-2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
-3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
-4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+A simple strategy to for filling in all of the missing values in the dataset is to use the mean for that 5-minute interval. This was computed as follows and stored as a seperate data frame ('d') and a histogram of the resulting dataset is shown below.
+
+
+```r
+d <- activity
+
+for (i in 1:nrow(d)) {
+    if(is.na(d$steps[i])) {
+      d$steps[i] <- mean(d$steps[d$interval==d$interval[i]], na.rm = TRUE)
+  }
+}
+
+dAverage <- d %>% group_by(interval) %>%  summarise(average.steps = mean(steps, na.rm = TRUE))
+
+hist(dAverage$average.steps, breaks = 61, 
+     main = "Total number of steps taken each day \n(imputing using mean)", 
+     xlab = "Total number of steps per day",
+     col = "blue")
+```
+
+![](PA1_template_files/figure-html/imputingMean-1.png)<!-- -->
+
+The table below shows the mean and median calculated values for the data when it contains missing values and when it contains imputed values.    
+
+
+```r
+dMeanTotalSteps <- as.integer(mean(dAverage$average.steps, na.rm = TRUE))
+dMedianTotalSteps <- median(dAverage$average.steps, na.rm = TRUE)
+```
+
+
+| Statistic | With Missing Values | With Imputed Values |
+|-----------|---------------------|---------------------|
+| Mean      | 10766 |   37|
+| Median    | 10765| 34 |
+
+From these data it can be seen that imputing hte missing values using the mean for the respective 5-min interval has decreased the average number of steps taken each day by nearly 300-fold, even though there were only 8 days of data missing in the data set.   
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
