@@ -53,12 +53,13 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 		
 ## Other Files
 
-  * instructions_fig
-    Folder containing sample plot
-    
-  * doc
-    Folder with instructions to add SHA-1 hash when submitting
-    
-  * PA1_template_files/figure-html
-    Image files for report
-    
+	* instructions_fig
+		Folder containing sample plot
+
+	* doc
+		Folder with instructions to add SHA-1 hash when submitting
+
+	* PA1_template_files/figure-html
+		Image files for report
+
+		
