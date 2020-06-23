@@ -11,7 +11,7 @@ The objective of the project is to write a report (as a single R markdown docume
 ## Input File
 	The following data file was provided in the assigment.
 
-	* 'activity.csv'
+	* 'activity.csv' (or 'activity.zip')
     
     The variables included in this dataset are:
 
@@ -51,3 +51,14 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 	* PA1_template.htm
 		Created by running knit in R Studio
 		
+## Other Files
+
+  * instructions_fig
+    Folder containing sample plot
+    
+  * doc
+    Folder with instructions to add SHA-1 hash when submitting
+    
+  * PA1_template_files/figure-html
+    Image files for report
+    
