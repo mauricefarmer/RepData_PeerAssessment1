@@ -1,6 +1,7 @@
-
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Maurice Farmer"
+date: "24/06/2020"
 output: 
   html_document: 
     keep_md: true
